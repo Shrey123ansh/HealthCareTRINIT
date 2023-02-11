@@ -33,7 +33,6 @@ const Navbar = () => {
             </div>
         </div>
       </nav>
-      wtih Navbar
     </>
   );
 };

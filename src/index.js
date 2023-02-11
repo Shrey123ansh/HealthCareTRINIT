@@ -6,8 +6,8 @@ import reportWebVitals from "./reportWebVitals";
 import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
 import "./styles/globals.css";
 
-import { HealthCareProvider } from "../Context/HealthCareContext";
-
+// import { HealthCareProvider } from "../Context/healthCareContext";
+import { HealthCareProvider } from "./Context/HealthCareContext";
 // This is the chainId your dApp will work on.
 const activeChainId = ChainId.Mumbai;
 

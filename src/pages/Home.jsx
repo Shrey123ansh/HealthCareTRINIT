@@ -12,14 +12,14 @@ const Home = () => {
         {address ? (
           <div className="">
             <div>
-              <Link to="/patient">
+              <Link to="/Signuppatient">
                 <Button variant="outline-light" size="lg">
                   Sign up as Patient
                 </Button>
               </Link>
             </div>
             <div>
-              <Link to="/doctor">
+              <Link to="/Signupdoctor">
                 <Button variant="outline-light" size="lg">
                   Sign up as Doctor
                 </Button>

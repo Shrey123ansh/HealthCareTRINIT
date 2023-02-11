@@ -1,27 +1,38 @@
 import React, { useState, useEffect } from "react";
+import { ethers } from "ethers";
+import { Link } from "react-router-dom";
+
 
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
 // import { useRouter } from "next/router";
 
 //INTERNAL IMPORT
-import { connectingWithContract } from "../Utils/apiFeature";
+import {
+  ChechIfWalletConnected,
+  connectWallet,
+  connectingWithContract,
+} from "../Utils/apiFeature";
 
 export const HealthContext = React.createContext();
 
 export const HealthCareProvider = ({ children }) => {
   const address = useAddress();
+  
 
   //USER DATA
   const [currentUserName, setCurrentUserName] = useState("");
   const [currentUserAddress, setCurrentUserAddress] = useState("");
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
-//   const [userLists, setUserLists] = useState([]);
+  const [data, setData] = useState("");
   const [error, setError] = useState("");
+  const [provider, setProvider] = useState(null);
+  const [healthCare, setHealthCare] = useState(null);
+  //   const [userLists, setUserLists] = useState([]);
+  // const [account, setAccount] = useState("");
   //   const router = useRouter();
 
   //CREATE ACCOUNT
-  const signupDoctor = async ({ name, accountAddress }) => {
+  const SignupDoctor = async ({ name}) => {
     try {
       // if (name || accountAddress)
       //   return setError("Name And AccountAddress, cannot be emty");
@@ -37,7 +48,7 @@ export const HealthCareProvider = ({ children }) => {
     }
   };
 
-  const signupPatient = async ({ name, accountAddress }) => {
+  const SignupPatient = async ({ name }) => {
     try {
       // if (name || accountAddress)
       //   return setError("Name And AccountAddress, cannot be emty");
@@ -54,35 +65,54 @@ export const HealthCareProvider = ({ children }) => {
   };
 
   //fetch data of doctor and patient
-  const getDoctorInfo = async () => {
+  // const getDoctorInfo = async () => {
+  //   try {
+  //     const contract = await connectingWithContract();
+  //     const data = await contract.getDoctorInfo();
+  //     setData(data);
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.log("Currently You Have no Message");
+  //   }
+  // };
+  const getDostorInfo = async () => {
     try {
       const contract = await connectingWithContract();
-      const read = await contract.getDoctorInfo();
-      setData(read);
+      const result = await contract.doctors();
+      const {0: name, 1: id} = result;
+      console.log(name);
+      // setData(data);
     } catch (error) {
       console.log("Currently You Have no Message");
     }
-  }; 
+  };
 
-  const getPatientInfo = async () => {
-    try {
-      const contract = await connectingWithContract();
-      const read = await contract.getPatientInfo();
-      setData(read);
-    } catch (error) {
-      console.log("Currently You Have no Message");
-    }
-  }; 
-
+  // const getPatientInfo = async () => {
+  //   try {
+  //     const contract = await connectingWithContract();
+  //     const data = await contract.getPatientInfo();
+  //     setData(data);
+  //   } catch (error) {
+  //     console.log("Currently You Have no Message");
+  //   }
+  // };
+  useEffect(() => {
+    // getPatientInfo();
+    getDostorInfo();
+    // getDoctorInfo();
+  }, []);
+  console.log(data);
   return (
     <HealthContext.Provider
       value={{
-        address,
+        data,
+        ChechIfWalletConnected,
+        connectWallet,
         connectingWithContract,
-        signupDoctor,
-        signupPatient,
-        getDoctorInfo,
-        getPatientInfo,
+        SignupDoctor,
+        SignupPatient,
+        getDostorInfo,
+        // getPatientInfo,
       }}
     >
       {children}

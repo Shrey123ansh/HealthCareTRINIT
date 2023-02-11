@@ -2,47 +2,21 @@ import React,{ useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 // import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
 import { Route, Routes } from 'react-router-dom';
+import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
 
-// // ABIs
-// import HealthCare from './abis/HealthCare.json'
 
-// // Config
-// import config from './config.json'
 
 import { Sidebar, Navbar } from './components';
-import {  Home, Doctor,Patient } from './pages';
+import {  Home, Doctor,Patient,Signuppatient,Signupdoctor } from './pages';
 
 
 const App = () => {
-  // const address = useAddress();
-
-  
-  // const [provider, setProvider] = useState(null);
-  // const [healthCare, setHealthCare] = useState(null);
-  
-  // const [account, setAccount] = useState("");
-  
-  // const loadBlockchainData = async () => {
-    // if (!window.ethereum) return console.log("Install MetaMask");
-
-  //   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  //   console.log(provider)
-  //   setProvider(provider)
-  //   console.log(address)
-  //   const network = await provider.getNetwork()
-
-  //   const healthCare = new ethers.Contract(config[network.chainId].healthCare.address, HealthCare, provider)
-  //   setHealthCare(healthCare)
-  //   console.log(healthCare)
-  // }
-
-  // useEffect(() => {
-  //   loadBlockchainData()
-  // }, [])
-
+  const address = useAddress();
 
   return (
-    <div className="">
+    <div>
+    {address ? (
+      <div className="">
       <div className="">
         <Sidebar />
       </div>
@@ -54,8 +28,15 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/doctor" element={<Doctor />} />
           <Route path="/patient" element={<Patient />} />
+          <Route path="/Signuppatient" element={<Signuppatient />} />
+          <Route path="/Signupdoctor" element={<Signupdoctor />} />
         </Routes>
       </div>
+
+    </div>
+    ) : (
+      <ConnectWallet />
+    )}
     </div>
   )
 }
