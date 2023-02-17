@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { Link } from "react-router-dom";
+import { HealthCareabi,HealthCareAddress } from "../Context/constants";
+
 
 
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
@@ -65,41 +67,49 @@ export const HealthCareProvider = ({ children }) => {
   };
 
   //fetch data of doctor and patient
-  // const getDoctorInfo = async () => {
+  const getDoctorInfo = async () => {
+    try {
+      const contract = await connectingWithContract();
+      const [name,id,userlist]  = await contract.getDoctorInfo();
+      // setData(data);
+      console.log(name);
+      console.log(id);
+      console.log(userlist);
+    } catch (error) {
+      console.log("Currently You Have no Message");
+    }
+  };
+  // const getDostorInfo = async () => {
   //   try {
-  //     const contract = await connectingWithContract();
-  //     const data = await contract.getDoctorInfo();
-  //     setData(data);
+  //     //After adding your Hardhat network to your metamask, this code will get providers and signers
+  //   const provider = new ethers.providers.Web3Provider(window.ethereum);
+  //   const signer = provider.getSigner();
+  //   //Pull the deployed contract instance
+  //   let contract = new ethers.Contract(HealthCareAddress, HealthCareabi, signer);
+  //   const [data,address]  = await contract.getDoctorInfo();
+    
   //     console.log(data);
+  //     console.log(address);
   //   } catch (error) {
   //     console.log("Currently You Have no Message");
   //   }
   // };
-  const getDostorInfo = async () => {
+
+  const getPatientInfo = async () => {
     try {
       const contract = await connectingWithContract();
-      const result = await contract.doctors();
-      const {0: name, 1: id} = result;
+      const [name,id] = await contract.getPatientInfo();
       console.log(name);
+      console.log(id);
       // setData(data);
     } catch (error) {
       console.log("Currently You Have no Message");
     }
   };
-
-  // const getPatientInfo = async () => {
-  //   try {
-  //     const contract = await connectingWithContract();
-  //     const data = await contract.getPatientInfo();
-  //     setData(data);
-  //   } catch (error) {
-  //     console.log("Currently You Have no Message");
-  //   }
-  // };
   useEffect(() => {
-    // getPatientInfo();
-    getDostorInfo();
-    // getDoctorInfo();
+    getPatientInfo();
+    // getDostorInfo();
+    getDoctorInfo();
   }, []);
   console.log(data);
   return (
@@ -111,7 +121,7 @@ export const HealthCareProvider = ({ children }) => {
         connectingWithContract,
         SignupDoctor,
         SignupPatient,
-        getDostorInfo,
+        getDoctorInfo,
         // getPatientInfo,
       }}
     >
